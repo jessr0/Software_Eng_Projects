@@ -1,0 +1,33 @@
+COUNTRY=['Albania', 'Zimbabwe', 'Angola']
+
+rule all:
+  input:
+    expand('{country}_fire_gdp.png', country=COUNTRY)
+   
+rule download_Agro_data:
+  output:
+    'data/Agrofood_co2_emission.csv'
+  shell:
+    'wget -P data/ {output} "https://docs.google.com/uc?export=download&id=1Wytf3ryf9EtOwaloms8HEzLG0yjtRqxr"'
+
+rule download_GDP_data:
+  output:
+    'data/IMF_GDP.csv'
+  shell:
+    'wget -P data/ {output} "https://docs.google.com/uc?export=download&id=1tuoQ9UTW_XRKgBOBaTLtGXh8h0ytKvFp"'
+                                         
+rule get_data:
+  input:
+    'data/Agrofood_co2_emission.csv'
+  output:
+    '{x}_fire_gdp.txt'
+  shell:
+    'python3 src/get_fire.py {input} Year "Savanna fires" "Forest fires" "data/IMF_GDP.csv" "{wildcards.x}" "{output}"'
+
+rule plot_data:
+  input:
+    '{w}_fire_gdp.txt'
+  output:
+    '{w}_fire_gdp.png'
+  shell:
+    'python3 src/scatter.py "{input}" "{output}" "{wildcards.w}" Fires GDP'

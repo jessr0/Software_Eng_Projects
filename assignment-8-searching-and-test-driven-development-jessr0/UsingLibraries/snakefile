@@ -1,0 +1,19 @@
+rule all:
+  input:
+    expand('Figure_1.png')
+
+rule clean_data:
+  input:
+    '../data/Agrofood_co2_emission.csv'
+  output:
+    'merged_agro_gdp.tsv'
+  shell:
+    'python3 clean_data.py'
+
+rule plots:
+  input:
+    'merged_agro_gdp.tsv'
+  output:
+    'Figure_1.png'
+  shell:
+    'python3 plots.py'

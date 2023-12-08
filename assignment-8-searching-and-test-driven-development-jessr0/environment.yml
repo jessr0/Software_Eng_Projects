@@ -1,0 +1,13 @@
+name: swe4s8
+
+channels:
+  - defaults
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - python=3.11.0
+  - pandas=2.1.1
+  - pycodestyle
+  - matplotlib
+  - numpy
